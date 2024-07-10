@@ -27,8 +27,8 @@ public class SecurityConfigurations {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/login")
-                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                .requestMatchers("/swagger-ui.html", "/v3/api-docs/**","/swagger-ui/**").permitAll()
                 //.antMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN")
                 //.antMatchers(HttpMethod.DELETE, "/pacientes").hasRole("ADMIN")//esto es para darle atributos al admin de borrar
                 .anyRequest()

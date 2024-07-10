@@ -1,5 +1,6 @@
 package med.voll.API.domain.consulta;
 
+import med.voll.API.domain.consulta.validaciones.ValidadorCancelamientoDeConsulta;
 import med.voll.API.domain.consulta.validaciones.ValidadorDeConsultas;
 import med.voll.API.domain.medico.Medico;
 import med.voll.API.domain.medico.MedicoRepository;
@@ -25,14 +26,15 @@ public class AgendaDeConsultaService {
 
     @Autowired
     List<ValidadorDeConsultas> validadores;
+    List<ValidadorCancelamientoDeConsulta> validadoresCancelamiento;
 
-    public void agendar(DatosAgendarConsulta datos){
+    public DatosDetalleConsulta agendar(DatosAgendarConsulta datos){
 
-        if(pacienteRepository.findById(datos.idPaciente()).isPresent()){
+        if(!pacienteRepository.findById(datos.idPaciente()).isPresent()){
             throw new ValidacionDeIntegridad("Este id para el paciente no fue encontrado");
         }
 
-        if(datos.idMedico() != null && medicoRepository.existsById(datos.idMedico())){
+        if(datos.idMedico() != null && !medicoRepository.existsById(datos.idMedico())){
             throw new ValidacionDeIntegridad("Este id para el medico no fue encontrado");
         }
 
@@ -43,11 +45,28 @@ public class AgendaDeConsultaService {
 
         var medico = seleccionarMedico(datos);
 
-        var consulta = new Consulta(null, medico, paciente, datos.fecha());
+        if(medico == null){
+            throw new ValidacionDeIntegridad("No se cuenta con medicos disponibles para este horario y especialidad");
+        }
+
+        var consulta = new Consulta(medico, paciente, datos.fecha());
 
         consultaRepository.save(consulta);
 
+        return new DatosDetalleConsulta(consulta);
+
     }
+
+//    public void cancelar(DatosCancelamientoConsulta datos){
+//        if(!consultaRepository.existsById(datos.idConsulta())){
+//            throw new ValidacionDeIntegridad("Id de la consulta informado no existe!");
+//        }
+//
+//        validadoresCancelamiento.forEach(v -> v.validar(datos));
+//
+//        var consulta = consultaRepository.getReferenceById(datos.idConsulta());
+//        consulta.cancelar(datos.motivo());
+//    }
 
     private Medico seleccionarMedico(DatosAgendarConsulta datos) {
         if(datos.idMedico()!=null){

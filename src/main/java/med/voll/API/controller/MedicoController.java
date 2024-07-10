@@ -1,5 +1,6 @@
 package med.voll.API.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.API.domain.direccion.DatosDireccion;
@@ -16,6 +17,7 @@ import java.net.URI;
 
 @RestController //se le indica al codigo que es un controller
 @RequestMapping ("/medicos") //se le indica la http addres que se esta utilizando en el API
+@SecurityRequirement(name = "bearer-key")
 public class MedicoController {
 
     @Autowired
