@@ -26,6 +26,8 @@ public class AgendaDeConsultaService {
 
     @Autowired
     List<ValidadorDeConsultas> validadores;
+
+    @Autowired
     List<ValidadorCancelamientoDeConsulta> validadoresCancelamiento;
 
     public DatosDetalleConsulta agendar(DatosAgendarConsulta datos){
