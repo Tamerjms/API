@@ -10,6 +10,8 @@ public record DatosCancelamientoConsulta(Long idConsulta,
                                          Long motivo,
                                          @NotNull
                                          @Future
-                                         LocalDateTime fecha) {
+                                         LocalDateTime fecha,
+                                         @NotNull
+                                         Long motivoCancelamiento) {
 
 }

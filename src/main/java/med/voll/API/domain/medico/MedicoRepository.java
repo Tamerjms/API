@@ -1,5 +1,9 @@
 package med.voll.API.domain.medico;
 
+import med.voll.API.domain.consulta.Consulta;
+import med.voll.API.domain.direccion.DatosDireccion;
+import med.voll.API.domain.paciente.DatosRegistroPaciente;
+import med.voll.API.domain.paciente.Paciente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,4 +36,5 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             WHERE m.id = :idMedico
             """)
     Boolean findActivoById(Long idMedico);
+
 }
